@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <form action="/admin" method="post">
+        <input type="text" name="_id" placeholder="_ID" /> The ID of the user you want to give admin to.
+        <br>
+        <input type="text" name="name" placeholder="Name" /> Try to keep this the same each time.
+        <br>
+        <input type="submit" value="Send Request">
+    </form>
+    <input type="text" id="_id" /> _ID
+    <br>
+    <input type="text" id="name" /> Name
+    <br>
+    <input type="button" value="Push Me!" id="button"> Push to send post.
+    <script type="text/javascript">
+        document.onload = function() {
+            document.getElementById("button").onclick = function() {
+                var clientId = "mlg"
+                var clientSecret = "pro";
+
+                var authorizationBasic = window.btoa(clientId + ':' + clientSecret);
+
+                var request = new XMLHttpRequest();
+                request.open('POST', "http://lightningshock.us.to:8083/admin", true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                request.setRequestHeader('Authorization', 'Basic ' + authorizationBasic);
+                request.setRequestHeader('Accept', 'application/json');
+                request.send("_id="+document.getElementById("_id").value+"&name="+document.getElementById("name").value);
+
+                request.onreadystatechange = function() {
+                    if (request.readyState === 4) {
+                        alert(request.responseText);
+                    }
+                };
+            }
+
+        };
+    </script>
+</body>
+
+</html>
