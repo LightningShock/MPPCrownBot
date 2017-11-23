@@ -24,7 +24,7 @@ mongoose.connect('mongodb://localhost:27017/crownbot', { useMongoClient: true })
 
 var admins = [];
 var who = undefined;
-client.setChannel("RP Room");
+client.setChannel("mytestroom");
 
 client.on("participant update", updateUsers);
 client.on("participant added", checkBans);
@@ -252,7 +252,7 @@ function updateUsers(msg) {
 
 function checkBans(user) {
     var now = new Date().getTime();
-    Ban.find({ _id: user._id }).then(function(ban) {
+    Ban.findOne({ _id: user._id }).then(function(ban) {
         if (ban !== null) {
             if (ban.end == 0) { //inf ban, never unban pls thanks
                 client.kickBan(user._id, 3600000);
@@ -265,6 +265,7 @@ function checkBans(user) {
                     client.kickBan(user._id, 3600000);
                 }
                 else { //ban less than an hour, kick remaining milliseconds.
+                    console.log("Kicking "+user._id+" for "+ (ban.end - now)+"ms");
                     client.kickBan(user._id, ban.end - now);
                 }
             }
